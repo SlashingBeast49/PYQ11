@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class 11 JEE PYQ Engine — Setup Drill</title>
+  <meta name="description" content="Comprehensive Class 11 JEE Main & Advanced Previous Year Questions with progressive hint system, analytics, and offline-first cookie persistence." />
+
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+        integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV"
+        crossorigin="anonymous" />
+
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ══════════════════════ TOP NAV BAR ══════════════════════ -->
+  <header class="topbar">
+    <a class="topbar-logo" href="#">
+      <span class="logo-mark">JEE</span>
+      <span>Class 11 PYQ Engine</span>
+    </a>
+    <span class="topbar-title">Setup Drill</span>
+
+    <div class="topbar-spacer"></div>
+
+    <div class="topbar-actions">
+      <!-- Cookie status indicator -->
+      <span class="cookie-badge">
+        <span class="cookie-dot"></span>
+        <span id="cookie-badge-text">Cookies Active</span>
+      </span>
+
+      <!-- Formula Drawer trigger -->
+      <button class="btn btn-ghost" id="btn-formula-drawer">
+        📐 Formulas
+      </button>
+
+      <!-- Progress / Cookie management -->
+      <button class="btn btn-ghost" id="btn-progress-modal">
+        📊 Progress
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════ MAIN LAYOUT ══════════════════════ -->
+  <div class="main-layout">
+
+    <!-- ───────── SIDEBAR ───────── -->
+    <aside class="sidebar">
+
+      <!-- KPI Summary -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Mastery</div>
+        <div class="kpi-mini-grid">
+          <div class="kpi-mini-card">
+            <div class="kpi-mini-label">Solved</div>
+            <div class="kpi-mini-value accent" id="kpi-solved">0</div>
+          </div>
+          <div class="kpi-mini-card">
+            <div class="kpi-mini-label">Total</div>
+            <div class="kpi-mini-value" id="kpi-total">0</div>
+          </div>
+          <div class="kpi-mini-card">
+            <div class="kpi-mini-label">Review</div>
+            <div class="kpi-mini-value" id="kpi-blank" style="color:var(--blank-color)">0</div>
+          </div>
+          <div class="kpi-mini-card">
+            <div class="kpi-mini-label">Bookmarked</div>
+            <div class="kpi-mini-value" id="kpi-bookmarked" style="color:var(--bookmarked-color)">0</div>
+          </div>
+        </div>
+        <div style="margin-top:var(--space-3)">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+            <span style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono)">Overall Completion</span>
+            <span style="font-size:11px;font-family:var(--font-mono);font-weight:700;color:var(--accent-primary)" id="kpi-pct">0%</span>
+          </div>
+          <div class="mini-progress">
+            <div class="mini-progress-fill" id="kpi-pct-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subject Selection -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Subject</div>
+        <div class="subject-tabs" id="subject-tabs">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Chapter Filter -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Chapter</div>
+        <div class="chapter-list" id="chapter-list">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Status Filter -->
+      <div class="sidebar-section">
+        <div class="sidebar-label">Status Filter</div>
+        <div class="status-filters">
+          <button class="filter-btn active" data-filter="all">
+            <span class="filter-indicator all"></span>
+            All Questions
+          </button>
+          <button class="filter-btn" data-filter="unattempted">
+            <span class="filter-indicator unattempted"></span>
+            Unattempted
+          </button>
+          <button class="filter-btn" data-filter="solved">
+            <span class="filter-indicator solved"></span>
+            Solved
+          </button>
+          <button class="filter-btn" data-filter="blank">
+            <span class="filter-indicator blank"></span>
+            Needs Review
+          </button>
+          <button class="filter-btn" data-filter="bookmarked">
+            <span class="filter-indicator bookmarked"></span>
+            Bookmarked
+          </button>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ───────── CONTENT AREA ───────── -->
+    <main class="content-area">
+
+      <!-- Mastery Matrix -->
+      <div class="mastery-matrix">
+        <div class="mastery-matrix-header">
+          <div>
+            <div style="font-size:14px;font-weight:600;">Syllabus Mastery Matrix</div>
+            <div style="font-size:11px;color:var(--text-muted);font-family:var(--font-mono);margin-top:2px">Real-time completion per subject</div>
+          </div>
+        </div>
+        <div id="mastery-matrix-body">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Question List -->
+      <div>
+        <div class="question-list-header">
+          <div>
+            <div class="section-heading">Question Bank</div>
+            <div class="section-subheading" id="q-count">Loading…</div>
+          </div>
+        </div>
+        <div id="question-list" style="margin-top:var(--space-4)">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Active Question Workspace -->
+      <div id="workspace">
+        <!-- rendered by JS when a question is opened -->
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════ FOOTER ══════════════════════ -->
+  <footer class="footer">
+    <div class="footer-left">
+      <span>Class 11 JEE PYQ Engine</span>
+      <span style="color:var(--border-default)">|</span>
+      <span>65+ Authentic JEE Main &amp; Advanced PYQs</span>
+      <span style="color:var(--border-default)">|</span>
+      <span>Physics • Chemistry • Mathematics</span>
+    </div>
+    <div class="footer-right">
+      <span id="footer-cookie-status">Cookie storage active</span>
+      <button class="btn btn-danger" id="btn-reset" style="font-size:10px;padding:3px 8px">Reset All</button>
+    </div>
+  </footer>
+
+</div><!-- /.app-shell -->
+
+<!-- ══════════════════════ FORMULA DRAWER ══════════════════════ -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<div class="formula-drawer" id="formula-drawer" role="dialog" aria-label="Formula Reference Sheet">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-title">📐 Quick-Reference Formulas</div>
+      <div class="drawer-subtitle">Class 11 — JEE Core Formulae</div>
+    </div>
+    <button class="btn-icon" id="btn-close-drawer">✕</button>
+  </div>
+  <div class="drawer-body" id="drawer-body">
+    <!-- rendered by JS -->
+  </div>
+</div>
+
+<!-- ══════════════════════ PROGRESS MODAL ══════════════════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">📊 Progress Manager</div>
+      <button class="btn-icon" id="btn-close-modal">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--text-muted)">
+        Progress is stored in browser cookies (<code>jee11_prog_*</code>) and persists for 1 year. Export to back up or transfer between devices.
+      </div>
+
+      <div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:var(--space-2)">Export Current Progress (JSON)</div>
+        <textarea class="import-textarea" id="export-textarea" readonly placeholder="Click Export to generate…"></textarea>
+      </div>
+
+      <div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:var(--space-2)">Import Progress (paste JSON)</div>
+        <textarea class="import-textarea" id="import-textarea" placeholder='Paste exported JSON here and click Import…'></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" id="btn-reset">🗑 Reset All</button>
+      <button class="btn btn-ghost" id="btn-export">📋 Export &amp; Copy</button>
+      <button class="btn btn-primary" id="btn-import">⬇ Import</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ TOAST CONTAINER ══════════════════════ -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ══════════════════════ SCRIPTS ══════════════════════ -->
+<!-- KaTeX -->
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+        integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8"
+        crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+        crossorigin="anonymous"></script>
+
+<!-- App Data -->
+<script src="pyq_data.js"></script>
+
+<!-- App Logic -->
+<script src="app.js"></script>
+
+<!-- KaTeX init trigger after defer scripts load -->
+<script>
+  // Ensure KaTeX auto-render fires after everything loads
+  window.addEventListener('load', () => {
+    if (typeof renderMathInElement === 'function') {
+      // Re-render any math that was set before KaTeX loaded
+      document.querySelectorAll('.q-statement, .hint-content, .formula-item, .mcq-options, .option-text').forEach(el => {
+        renderMathInElement(el, {
+          delimiters: [
+            { left: '\\(', right: '\\)', display: false },
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '$$', right: '$$',   display: true  },
+            { left: '$',  right: '$',    display: false },
+          ],
+          throwOnError: false,
+          strict: false,
+        });
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
